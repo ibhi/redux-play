@@ -1,4 +1,5 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
+import logger from 'redux-logger';
 
 let initialState = {
     user: {
@@ -51,18 +52,18 @@ const reducers = combineReducers({
     tweets: tweetsReducer
 });
 
-const logger = (store) => (next) => (action) => {
-    console.log('Action fired ', action);
-    next(action);
-}
+// const logger = (store) => (next) => (action) => {
+//     console.log('Action fired ', action);
+//     next(action);
+// }
 
-const middleware = applyMiddleware(logger);
+const middleware = applyMiddleware(logger());
 
 const store = createStore(reducers, middleware);
 
-store.subscribe(() => {
-    console.log('Store changed ', store.getState());
-});
+// store.subscribe(() => {
+//     console.log('Store changed ', store.getState());
+// });
 
 store.dispatch({type: "CHANGE_NAME", payload: "Jane"});
 store.dispatch({type: "CHANGE_AGE", payload: 20});
