@@ -5,7 +5,13 @@ let initialState = {
         name: "John Doe",
         age: 35
     },
-    tweets: []
+    tweets: [{
+        text: 'Hellow',
+        author: "John Doe"
+    }, {
+        text: 'Hi',
+        author: "John Doe"
+    }]
 };
 
 const userReducer = (state = initialState.user, action) => {
@@ -28,6 +34,14 @@ const userReducer = (state = initialState.user, action) => {
 }
 
 const tweetsReducer = (state = initialState.tweets, action) => {
+    switch (action.type) {
+        case "CHANGE_NAME": {
+            state = state.map((tweet) => {
+                return tweet = {...tweet, author: action.payload };
+            });
+            break;
+        }
+    }
     return state;
 }
 
