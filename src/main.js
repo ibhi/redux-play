@@ -1,4 +1,4 @@
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 
 let initialState = {
     user: {
@@ -13,6 +13,7 @@ let initialState = {
         author: "John Doe"
     }]
 };
+console.log(initialState);
 
 const userReducer = (state = initialState.user, action) => {
     switch (action.type) {
@@ -50,7 +51,14 @@ const reducers = combineReducers({
     tweets: tweetsReducer
 });
 
-const store = createStore(reducers);
+const logger = (store) => (next) => (action) => {
+    console.log('Action fired ', action);
+    next(action);
+}
+
+const middleware = applyMiddleware(logger);
+
+const store = createStore(reducers, middleware);
 
 store.subscribe(() => {
     console.log('Store changed ', store.getState());
