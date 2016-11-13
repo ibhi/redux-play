@@ -1,7 +1,8 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import logger from 'redux-logger';
+import  Immutable  from 'immutable';
 
-let initialState = {
+let initialState = Immutable.fromJS({
     user: {
         name: "John Doe",
         age: 35
@@ -13,33 +14,27 @@ let initialState = {
         text: 'Hi',
         author: "John Doe"
     }]
-};
+});
 console.log(initialState);
 
-const userReducer = (state = initialState.user, action) => {
+const userReducer = (state = initialState.get('user'), action) => {
     switch (action.type) {
         case "CHANGE_NAME": {
-            state = {
-                ...state,
-                name: action.payload
-            };
+            state = state.set('name', action.payload);
             break;
         }
         case "CHANGE_AGE": {
-            state = {
-                ...state,
-                age: action.payload
-            };
+            state = state.set('age', action.payload);
         }
     }
     return state;
 }
 
-const tweetsReducer = (state = initialState.tweets, action) => {
+const tweetsReducer = (state = initialState.get('tweets'), action) => {
     switch (action.type) {
         case "CHANGE_NAME": {
             state = state.map((tweet) => {
-                return tweet = {...tweet, author: action.payload };
+                return tweet.set('author', action.payload);
             });
             break;
         }
